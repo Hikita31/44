@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оценки курсов | EduClass</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        header {
+            background-color: #4285F4;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        nav {
+            background-color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-right: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            padding: 5px 0;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        nav ul li a:hover, nav ul li a.active {
+            color: #4285F4;
+            border-bottom: 3px solid #4285F4;
+        }
+        
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-right: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 16px;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar ul li a:hover {
+            background-color: #f0f0f0;
+            color: #4285F4;
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: #333;
+        }
+        
+        .course-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .course-selector select {
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background-color: white;
+            font-size: 16px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .semester-toggle {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .semester-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: white;
+            transition: all 0.3s;
+        }
+        
+        .semester-option.active {
+            background-color: #4285F4;
+            color: white;
+        }
+        
+        .semester-option:not(.active):hover {
+            background-color: #f0f0f0;
+        }
+        
+        .grades-summary {
+            display: flex;
+            margin-bottom: 30px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .summary-card {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .summary-card:not(:last-child) {
+            border-right: 1px solid #eee;
+        }
+        
+        .summary-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .summary-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .current-grade {
+            color: #4285F4;
+        }
+        
+        .average-grade {
+            color: #34A853;
+        }
+        
+        .min-grade {
+            color: #EA4335;
+        }
+        
+        .max-grade {
+            color: #FBBC05;
+        }
+        
+        .grades-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .grades-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background-color: #f5f5f5;
+            color: #555;
+            font-weight: 500;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .grades-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+        }
+        
+        .grades-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .assignment-name {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .assignment-type {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        .grade-value {
+            font-weight: bold;
+        }
+        
+        .grade-excellent {
+            color: #34A853;
+        }
+        
+        .grade-good {
+            color: #4285F4;
+        }
+        
+        .grade-satisfactory {
+            color: #FBBC05;
+        }
+        
+        .grade-poor {
+            color: #EA4335;
+        }
+        
+        .grade-missing {
+            color: #999;
+            font-style: italic;
+        }
+        
+        .grade-date {
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .grade-comment {
+            color: #666;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+        
+        .grade-comment i {
+            font-size: 16px;
+            vertical-align: middle;
+            margin-right: 5px;
+            color: #4285F4;
+        }
+        
+        .progress-container {
+            margin-top: 40px;
+        }
+        
+        .progress-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #4285F4;
+            border-radius: 5px;
+            width: 75%;
+        }
+        
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .no-grades {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .no-grades i {
+            font-size: 50px;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #4285F4;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3367D6;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .course-selector {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .course-selector select {
+                width: 100%;
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+            
+            .semester-toggle {
+                width: 100%;
+            }
+            
+            .grades-summary {
+                flex-direction: column;
+            }
+            
+            .summary-card:not(:last-child) {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                margin-bottom: 15px;
+                padding-bottom: 15px;
+            }
+            
+            .grades-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="material-icons">school</i>
+            <span>EduClass</span>
+        </div>
+        <div class="user-menu">
+            <i class="material-icons">notifications</i>
+            <i class="material-icons">apps</i>
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Profile">
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="courses.html">Курсы</a></li>
+            <li><a href="calendar.html">Календарь</a></li>
+            <li><a href="assignments.html">Задания</a></li>
+            <li><a href="grades.html" class="active">Оценки</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <aside class="sidebar">
+            <h3>Мои курсы</h3>
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">code</i>
+                        Программирование
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">calculate</i>
+                        Математика
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">science</i>
+                        Физика
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">language</i>
+                        Английский
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">history</i>
+                        История
+                    </a>
+                </li>
+            </ul>
+            
+            <h3 style="margin-top: 30px;">Фильтры</h3>
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">filter_list</i>
+                        Все оценки
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">assignment</i>
+                        По заданиям
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">quiz</i>
+                        Тесты
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">star</i>
+                        Лучшие
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Оценки</h1>
+                <button class="btn btn-primary">
+                    <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">download</i>
+                    Экспорт
+                </button>
+            </div>
+            
+            <div class="course-selector">
+                <select>
+                    <option>Программирование на Python</option>
+                    <option>Линейная алгебра</option>
+                    <option>Физика: Механика</option>
+                    <option>Английский язык B2</option>
+                    <option>История науки</option>
+                </select>
+                
+                <div class="semester-toggle">
+                    <div class="semester-option active">1 семестр 2025</div>
+                    <div class="semester-option">2 семестр 2024</div>
+                    <div class="semester-option">1 семестр 2024</div>
+                </div>
+            </div>
+            
+            <div class="grades-summary">
+                <div class="summary-card">
+                    <div class="summary-value current-grade">8.7</div>
+                    <div class="summary-label">Текущая оценка</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value average-grade">8.2</div>
+                    <div class="summary-label">Средний балл</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value min-grade">6.5</div>
+                    <div class="summary-label">Минимальная</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value max-grade">10.0</div>
+                    <div class="summary-label">Максимальная</div>
+                </div>
+            </div>
+            
+            <table class="grades-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Задание</th>
+                        <th style="width: 15%;">Дата</th>
+                        <th style="width: 15%;">Оценка</th>
+                        <th style="width: 15%;">Средний</th>
+                        <th style="width: 15%;">Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="assignment-name">Финальный проект</div>
+                            <div class="assignment-type">Проект</div>
+                        </td>
+                        <td class="grade-date">15 мая 2025</td>
+                        <td>
+                            <div class="grade-value grade-excellent">9.8</div>
+                            <div class="grade-comment">
+                                <i class="material-icons">thumb_up</i>
+                                Отличная работа!
+                            </div>
+                        </td>
+                        <td class="grade-value">8.4</td>
+                        <td>
+                            <div class="grade-value grade-excellent">Завершено</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="assignment-name">Тест: ООП</div>
+                            <div class="assignment-type">Тест</div>
+                        </td>
+                        <td class="grade-date">10 мая 2025</td>
+                        <td>
+                            <div class="grade-value grade-good">8.5</div>
+                        </td>
+                        <td class="grade-value">7.2</td>
+                        <td>
+                            <div class="grade-value grade-good">Завершено</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="assignment-name">Лабораторная работа 4</div>
+                            <div class="assignment-type">Лабораторная</div>
+                        </td>
+                        <td class="grade-date">5 мая 2025</td>
+                        <td>
+                            <div class="grade-value grade-satisfactory">7.0</div>
+                            <div class="grade-comment">
+                                <i class="material-icons">feedback</i>
+                                Проверьте раздел 3.2
+                            </div>
+                        </td>
+                        <td class="grade-value">6.8</td>
+                        <td>
+                            <div class="grade-value grade-satisfactory">Завершено</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="assignment-name">Домашнее задание 3</div>
+                            <div class="assignment-type">Домашнее задание</div>
+                        </td>
+                        <td class="grade-date">25 апр 2025</td>
+                        <td>
+                            <div class="grade-value grade-poor">6.5</div>
+                            <div class="grade-comment">
+                                <i class="material-icons">warning</i>
+                                Поздняя сдача (-1 балл)
+                            </div>
+                        </td>
+                        <td class="grade-value">7.1</td>
+                        <td>
+                            <div class="grade-value grade-poor">Завершено</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="assignment-name">Промежуточный тест</div>
+                            <div class="assignment-type">Тест</div>
+                        </td>
+                        <td class="grade-date">15 апр 2025</td>
+                        <td>
+                            <div class="grade-value grade-excellent">10.0</div>
+                        </td>
+                        <td class="grade-value">8.9</td>
+                        <td>
+                            <div class="grade-value grade-excellent">Завершено</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="assignment-name">Лабораторная работа 3</div>
+                            <div class="assignment-type">Лабораторная</div>
+                        </td>
+                        <td class="grade-date">5 апр 2025</td>
+                        <td>
+                            <div class="grade-value grade-good">8.0</div>
+                        </td>
+                        <td class="grade-value">7.5</td>
+                        <td>
+                            <div class="grade-value grade-good">Завершено</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="assignment-name">Домашнее задание 2</div>
+                            <div class="assignment-type">Домашнее задание</div>
+                        </td>
+                        <td class="grade-date">28 мар 2025</td>
+                        <td>
+                            <div class="grade-value grade-missing">-</div>
+                        </td>
+                        <td class="grade-value">7.3</td>
+                        <td>
+                            <div class="grade-value grade-missing">Не сдано</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="progress-container">
+                <h3 class="progress-title">Прогресс по курсу</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 87%;"></div>
+                </div>
+                <div class="progress-labels">
+                    <span>Начало</span>
+                    <span>87% завершено</span>
+                    <span>Конец</span>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <footer>
+        <p>© 2025 EduClass - Платформа для онлайн-обучения. Все права защищены.</p>
+        <p>
+            <a href="#" style="color: white; margin: 0 10px;">Политика конфиденциальности</a>
+            <a href="#" style="color: white; margin: 0 10px;">Условия использования</a>
+            <a href="#" style="color: white; margin: 0 10px;">Контакты</a>
+        </p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои курсы | EduClass</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        header {
+            background-color: #4285F4;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        nav {
+            background-color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-right: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            padding: 5px 0;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        nav ul li a:hover, nav ul li a.active {
+            color: #4285F4;
+            border-bottom: 3px solid #4285F4;
+        }
+        
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-right: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 16px;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar ul li a:hover {
+            background-color: #f0f0f0;
+            color: #4285F4;
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: #333;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border-radius: 20px;
+            padding: 8px 15px;
+            width: 300px;
+        }
+        
+        .search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            margin-left: 10px;
+        }
+        
+        .courses-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #4285F4;
+            color: #4285F4;
+            font-weight: 500;
+        }
+        
+        .tab:hover {
+            color: #4285F4;
+        }
+        
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .course-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .course-header {
+            height: 120px;
+            background-color: #4285F4;
+            position: relative;
+        }
+        
+        .course-header h3 {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .course-body {
+            padding: 20px;
+        }
+        
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .course-teacher {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .course-teacher img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .teacher-info h4 {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+        
+        .teacher-info p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .course-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .course-progress {
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #34A853;
+            border-radius: 3px;
+            width: 65%;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .course-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #4285F4;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3367D6;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #555;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-bar {
+                width: 100%;
+                margin-top: 15px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="material-icons">school</i>
+            <span>EduClass</span>
+        </div>
+        <div class="user-menu">
+            <i class="material-icons">notifications</i>
+            <i class="material-icons">apps</i>
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Profile">
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="courses.html" class="active">Курсы</a></li>
+            <li><a href="calendar.html">Календарь</a></li>
+            <li><a href="assignments.html">Задания</a></li>
+            <li><a href="grades.html">Оценки</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <aside class="sidebar">
+            <h3>Фильтры</h3>
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">filter_list</i>
+                        Все курсы
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">play_circle_filled</i>
+                        В процессе
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">check_circle</i>
+                        Завершенные
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">schedule</i>
+                        Запланированные
+                    </a>
+                </li>
+            </ul>
+            
+            <h3 style="margin-top: 30px;">Категории</h3>
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">code</i>
+                        Программирование
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">calculate</i>
+                        Математика
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">science</i>
+                        Наука
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">language</i>
+                        Языки
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">business</i>
+                        Бизнес
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Мои курсы</h1>
+                <div class="search-bar">
+                    <i class="material-icons">search</i>
+                    <input type="text" placeholder="Поиск курсов...">
+                </div>
+            </div>
+            
+            <div class="courses-tabs">
+                <div class="tab active">Все</div>
+                <div class="tab">В процессе</div>
+                <div class="tab">Завершенные</div>
+                <div class="tab">Архив</div>
+            </div>
+            
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-header" style="background-color: #4285F4;">
+                        <h3>Введение в Python</h3>
+                    </div>
+                    <div class="course-body">
+                        <div class="course-meta">
+                            <span>12 уроков</span>
+                            <span>65% завершено</span>
+                        </div>
+                        <div class="course-teacher">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Teacher">
+                            <div class="teacher-info">
+                                <h4>Анна Петрова</h4>
+                                <p>Преподаватель</p>
+                            </div>
+                        </div>
+                        <p class="course-description">
+                            Основы программирования на Python для начинающих. Изучите синтаксис, структуры данных и основы ООП.
+                        </p>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Прогресс</span>
+                                <span>65%</span>
+                            </div>
+                        </div>
+                        <div class="course-actions">
+                            <button class="btn btn-secondary">Подробнее</button>
+                            <button class="btn btn-primary">Продолжить</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-header" style="background-color: #EA4335;">
+                        <h3>Линейная алгебра</h3>
+                    </div>
+                    <div class="course-body">
+                        <div class="course-meta">
+                            <span>8 уроков</span>
+                            <span>30% завершено</span>
+                        </div>
+                        <div class="course-teacher">
+                            <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Teacher">
+                            <div class="teacher-info">
+                                <h4>Сергей Иванов</h4>
+                                <p>Профессор</p>
+                            </div>
+                        </div>
+                        <p class="course-description">
+                            Основы линейной алгебры: векторы, матрицы, системы линейных уравнений и их применение.
+                        </p>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 30%;"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Прогресс</span>
+                                <span>30%</span>
+                            </div>
+                        </div>
+                        <div class="course-actions">
+                            <button class="btn btn-secondary">Подробнее</button>
+                            <button class="btn btn-primary">Продолжить</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-header" style="background-color: #FBBC05;">
+                        <h3>Английский B2</h3>
+                    </div>
+                    <div class="course-body">
+                        <div class="course-meta">
+                            <span>16 уроков</span>
+                            <span>90% завершено</span>
+                        </div>
+                        <div class="course-teacher">
+                            <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Teacher">
+                            <div class="teacher-info">
+                                <h4>Елена Смирнова</h4>
+                                <p>Преподаватель английского</p>
+                            </div>
+                        </div>
+                        <p class="course-description">
+                            Курс английского языка уровня Upper-Intermediate. Грамматика, лексика и практика общения.
+                        </p>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%;"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Прогресс</span>
+                                <span>90%</span>
+                            </div>
+                        </div>
+                        <div class="course-actions">
+                            <button class="btn btn-secondary">Подробнее</button>
+                            <button class="btn btn-primary">Завершить</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-header" style="background-color: #34A853;">
+                        <h3>Веб-разработка</h3>
+                    </div>
+                    <div class="course-body">
+                        <div class="course-meta">
+                            <span>24 урока</span>
+                            <span>15% завершено</span>
+                        </div>
+                        <div class="course-teacher">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Teacher">
+                            <div class="teacher-info">
+                                <h4>Дмитрий Кузнецов</h4>
+                                <p>Senior Developer</p>
+                            </div>
+                        </div>
+                        <p class="course-description">
+                            Полный курс по современной веб-разработке: HTML, CSS, JavaScript, React и Node.js.
+                        </p>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 15%;"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Прогресс</span>
+                                <span>15%</span>
+                            </div>
+                        </div>
+                        <div class="course-actions">
+                            <button class="btn btn-secondary">Подробнее</button>
+                            <button class="btn btn-primary">Продолжить</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-header" style="background-color: #673AB7;">
+                        <h3>Основы дизайна</h3>
+                    </div>
+                    <div class="course-body">
+                        <div class="course-meta">
+                            <span>10 уроков</span>
+                            <span>0% завершено</span>
+                        </div>
+                        <div class="course-teacher">
+                            <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Teacher">
+                            <div class="teacher-info">
+                                <h4>Ольга Васильева</h4>
+                                <p>UI/UX Designer</p>
+                            </div>
+                        </div>
+                        <p class="course-description">
+                            Введение в мир дизайна: теория цвета, типографика, композиция и основы UX.
+                        </p>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%;"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Прогресс</span>
+                                <span>0%</span>
+                            </div>
+                        </div>
+                        <div class="course-actions">
+                            <button class="btn btn-secondary">Подробнее</button>
+                            <button class="btn btn-primary">Начать</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-header" style="background-color: #FF5722;">
+                        <h3>Маркетинг</h3>
+                    </div>
+                    <div class="course-body">
+                        <div class="course-meta">
+                            <span>14 уроков</span>
+                            <span>100% завершено</span>
+                        </div>
+                        <div class="course-teacher">
+                            <img src="https://randomuser.me/api/portraits/men/50.jpg" alt="Teacher">
+                            <div class="teacher-info">
+                                <h4>Александр Новиков</h4>
+                                <p>Marketing Expert</p>
+                            </div>
+                        </div>
+                        <p class="course-description">
+                            Основы цифрового маркетинга: SEO, контент-маркетинг, социальные сети и аналитика.
+                        </p>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%;"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Прогресс</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        <div class="course-actions">
+                            <button class="btn btn-secondary">Подробнее</button>
+                            <button class="btn btn-primary">Сертификат</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <footer>
+        <p>© 2025 EduClass - Платформа для онлайн-обучения. Все права защищены.</p>
+        <p>
+            <a href="#" style="color: white; margin: 0 10px;">Политика конфиденциальности</a>
+            <a href="#" style="color: white; margin: 0 10px;">Условия использования</a>
+            <a href="#" style="color: white; margin: 0 10px;">Контакты</a>
+        </p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задания курсов | EduClass</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        header {
+            background-color: #4285F4;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        nav {
+            background-color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-right: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            padding: 5px 0;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        nav ul li a:hover, nav ul li a.active {
+            color: #4285F4;
+            border-bottom: 3px solid #4285F4;
+        }
+        
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-right: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 16px;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar ul li a:hover {
+            background-color: #f0f0f0;
+            color: #4285F4;
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: #333;
+        }
+        
+        .filter-options {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .filter-option {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .filter-option.active {
+            border-bottom: 3px solid #4285F4;
+            color: #4285F4;
+            font-weight: 500;
+        }
+        
+        .filter-option:hover {
+            color: #4285F4;
+        }
+        
+        .assignment-list {
+            margin-top: 20px;
+        }
+        
+        .assignment-group {
+            margin-bottom: 30px;
+        }
+        
+        .group-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+        
+        .group-title i {
+            margin-right: 10px;
+            color: #4285F4;
+        }
+        
+        .assignment-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4285F4;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .assignment-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .assignment-card.late {
+            border-left-color: #EA4335;
+        }
+        
+        .assignment-card.completed {
+            border-left-color: #34A853;
+        }
+        
+        .assignment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            align-items: flex-start;
+        }
+        
+        .assignment-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .assignment-course {
+            color: #4285F4;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .assignment-due {
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .assignment-due i {
+            margin-right: 5px;
+            font-size: 18px;
+        }
+        
+        .assignment-due.late {
+            color: #EA4335;
+        }
+        
+        .assignment-due.soon {
+            color: #FBBC05;
+        }
+        
+        .assignment-description {
+            color: #666;
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+        
+        .assignment-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        
+        .assignment-status {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+        
+        .status-badge.not-started {
+            background-color: #f0f0f0;
+            color: #666;
+        }
+        
+        .status-badge.in-progress {
+            background-color: #e6f2ff;
+            color: #4285F4;
+        }
+        
+        .status-badge.completed {
+            background-color: #e6ffe6;
+            color: #34A853;
+        }
+        
+        .status-badge.late {
+            background-color: #ffebee;
+            color: #EA4335;
+        }
+        
+        .assignment-actions {
+            display: flex;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .btn-primary {
+            background-color: #4285F4;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3367D6;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #555;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-danger {
+            background-color: #EA4335;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #d33426;
+        }
+        
+        .no-assignments {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .no-assignments i {
+            font-size: 50px;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .assignment-header {
+                flex-direction: column;
+            }
+            
+            .assignment-due {
+                margin-top: 10px;
+            }
+            
+            .assignment-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .assignment-actions {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="material-icons">school</i>
+            <span>EduClass</span>
+        </div>
+        <div class="user-menu">
+            <i class="material-icons">notifications</i>
+            <i class="material-icons">apps</i>
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Profile">
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="courses.html">Курсы</a></li>
+            <li><a href="calendar.html">Календарь</a></li>
+            <li><a href="assignments.html" class="active">Задания</a></li>
+            <li><a href="grades.html">Оценки</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <aside class="sidebar">
+            <h3>Фильтры заданий</h3>
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">inbox</i>
+                        Все задания
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">assignment</i>
+                        Активные
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">schedule</i>
+                        Предстоящие
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">warning</i>
+                        Просроченные
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">check_circle</i>
+                        Завершенные
+                    </a>
+                </li>
+            </ul>
+            
+            <h3 style="margin-top: 30px;">Мои курсы</h3>
+            <ul>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">code</i>
+                        Программирование
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">calculate</i>
+                        Математика
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">science</i>
+                        Физика
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">language</i>
+                        Английский
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Задания</h1>
+                <button class="btn btn-primary">
+                    <i class="material-icons" style="vertical-align: middle; margin-right: 5px;">add</i>
+                    Новое задание
+                </button>
+            </div>
+            
+            <div class="filter-options">
+                <div class="filter-option active">Все</div>
+                <div class="filter-option">На этой неделе</div>
+                <div class="filter-option">На следующей неделе</div>
+                <div class="filter-option">Просроченные</div>
+                <div class="filter-option">Завершенные</div>
+            </div>
+            
+            <div class="assignment-list">
+                <div class="assignment-group">
+                    <h3 class="group-title">
+                        <i class="material-icons">warning</i>
+                        Просроченные задания
+                    </h3>
+                    
+                    <div class="assignment-card late">
+                        <div class="assignment-header">
+                            <div>
+                                <div class="assignment-course">Программирование на Python</div>
+                                <h3 class="assignment-title">Домашнее задание: Функции</h3>
+                            </div>
+                            <div class="assignment-due late">
+                                <i class="material-icons">schedule</i>
+                                Просрочено на 3 дня
+                            </div>
+                        </div>
+                        <div class="assignment-description">
+                            Напишите программу, которая использует функции для вычисления факториала числа. Программа должна запрашивать у пользователя число и выводить его факториал.
+                        </div>
+                        <div class="assignment-footer">
+                            <div class="assignment-status">
+                                <span class="status-badge late">Просрочено</span>
+                                <span>Не сдано</span>
+                            </div>
+                            <div class="assignment-actions">
+                                <button class="btn btn-secondary">
+                                    <i class="material-icons" style="font-size: 18px; vertical-align: middle;">description</i>
+                                    Материалы
+                                </button>
+                                <button class="btn btn-danger">
+                                    <i class="material-icons" style="font-size: 18px; vertical-align: middle;">upload</i>
+                                    Сдать
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="assignment-group">
+                    <h3 class="group-title">
+                        <i class="material-icons">schedule</i>
+                        Текущие задания
+                    </h3>
+                    
+                    <div class="assignment-card">
+                        <div class="assignment-header">
+                            <div>
+                                <div class="assignment-course">Линейная алгебра</div>
+                                <h3 class="assignment-title">Контрольная работа: Матрицы</h3>
+                            </div>
+                            <div class="assignment-due soon">
+                                <i class="material-icons">schedule</i>
+                                До 25 мая 2025, 23:59
+                            </div>
+                        </div>
+                        <div class="assignment-description">
+                            Решите задачи по операциям с матрицами: сложение, умножение, нахождение определителя и обратной матрицы. Приведите полное решение.
+                        </div>
+                        <div class="assignment-footer">
+                            <div class="assignment-status">
+                                <span class="status-badge in-progress">В процессе</span>
+                                <span>Черновик сохранен</span>
+                            </div>
+                            <div class="assignment-actions">
+                                <button class="btn btn-secondary">
+                                    <i class="material-icons" style="font-size: 18px; vertical-align: middle;">description</i>
+                                    Материалы
+                                </button>
+                                <button class="btn btn-primary">
+                                    <i class="material-icons" style="font-size: 18px; vertical-align: middle;">edit</i>
+                                    Продолжить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="assignment-card">
+                        <div class="assignment-header">
+                            <div>
+                                <div class="assignment-course">Английский язык</div>
+                                <h3 class="assignment-title">Эссе: Мои летние планы</h3>
+                            </div>
+                            <div class="assignment-due">
+                                <i class="material-icons">schedule</i>
+                                До 30 мая 2025, 23:59
+                            </div>
+                        </div>
+                        <div class="assignment-description">
+                            Напишите эссе на тему "Мои летние планы" объемом 250-300 слов. Используйте будущее время и сложные грамматические конструкции.
+                        </div>
+                        <div class="assignment-footer">
+                            <div class="assignment-status">
+                                <span class="status-badge not-started">Не начато</span>
+                                <span>Не сдано</span>
+                            </div>
+                            <div class="assignment-actions">
+                                <button class="btn btn-secondary">
+                                    <i class="material-icons" style="font-size: 18px; vertical-align: middle;">description</i>
+                                    Материалы
+                                </button>
+                                <button class="btn btn-primary">
+                                    <i class="material-icons" style="font-size: 18px; vertical-align: middle;">edit</i>
+                                    Начать
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="assignment-group">
+                    <h3 class="group-title">
+                        <i class="material-icons">check_circle</i>
+                        Завершенные задания
+                    </h3>
+                    
+                    <div class="assignment-card completed">
+                        <div class="assignment-header">
+                            <div>
+                                <div class="assignment-course">Программирование на Python</div>
+                                <h3 class="assignment-title">Лабораторная работа: Списки</h3>
+                            </div>
+                            <div class="assignment-due">
+                                <i class="material-icons">schedule</i>
+                                Сдано 12 мая 2025
+                            </div>
+                        </div>
+                        <div class="assignment-description">
+                            Реализуйте функции для работы со списками: фильтрация, сортировка, поиск элементов. Напишите тесты для проверки корректности работы.
+                        </div>
+                        <div class="assignment-footer">
+                            <div class="assignment-status">
+                                <span class="status-badge completed">Завершено</span>
+                                <span>Оценка: 9/10</span>
+                            </div>
+                            <div class="assignment-actions">
+                                <button class="btn btn-secondary">
+                                    <i class="material-icons" style="font-size: 18px; vertical-align: middle;">description</i>
+                                    Решение
+                                </button>
+                                <button class="btn btn-secondary">
+                                    <i class="material-icons" style="font-size: 18px; vertical-align: middle;">feedback</i>
+                                    Комментарии
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <footer>
+        <p>© 2025 EduClass - Платформа для онлайн-обучения. Все права защищены.</p>
+        <p>
+            <a href="#" style="color: white; margin: 0 10px;">Политика конфиденциальности</a>
+            <a href="#" style="color: white; margin: 0 10px;">Условия использования</a>
+            <a href="#" style="color: white; margin: 0 10px;">Контакты</a>
+        </p>
+    </footer>
+</body>
+</html>
